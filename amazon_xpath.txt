@@ -1,0 +1,40 @@
+email = bhupsamaiet@gmail.com
+pass = Lav%210811
+
+1st url = https://www.amazon.in/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.in%2F%3Fref_%3Dnav_custrec_signin&openid.identity=
+	  http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=inflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&
+2nd url = https://www.amazon.in/hfc/bill/electricity?ref_=apay_deskhome_Electricity
+
+**************** after login ******************
+
+1. Amazon Pay = //a[contains(text(),"Amazon Pay")]
+
+*************** 2nd Page ******************
+
+2. Electercity = //span[contains(text(),"Electricity")] 
+
+*************** 3rd Page ******************
+
+3. Select state = //span[contains(text(),"Select State")]
+
+4. state = //a[contains(text(),"Rajasthan")]
+
+5. Select board = //span[contains(text(),"Select Electricity Board to proceed")]
+
+6. state = //a[contains(text(),"Jaipur Vidyut Vitran Nigam (JVVNL)")]
+
+7. K Number input = //label[contains(text(), "K Number")]//following::input
+
+8. submit button = //span[contains(text(), "Fetch Bill")]
+
+9. continue bill = //span[contains(text(), "Continue to Pay")]
+
+*************** 4th Page ******************
+
+10. paybill = //span[contains(text(), "Place Order and Pay")]
+
+last url = https://www.amazon.in/gp/buy/thankyou/handlers/display.html?purchaseId=404-0053738-9249956&ref_=chk_typ_browserRefresh&isRefresh=1
+
+BBPS Reference Number: = //*[contains(text(), "BBPS Reference Number")]
+Operator Reference Number = //*[contains(text(), "Operator Reference Number")]
+
