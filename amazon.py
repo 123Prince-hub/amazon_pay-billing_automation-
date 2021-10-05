@@ -31,15 +31,14 @@ def passError():
     signin = driver.find_element_by_xpath("//label[contains(text(),'Password')]//following::span").click()
 
 def emailError():
-    email = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::input").send_keys("bhupsamaiet@gmail.com")
     button = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::span").click()
 
 try:
     sleep(1)
-    capthatest = driver.find_element_by_xpath("//h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
-    sleep(1)
     i = 0
-    while((capthatest=="Enter the characters you see") or (capthatest=="There was a problem") or (capthatest=="Password assistance") or (i<16)):
+    capthatest = driver.find_element_by_xpath("//h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
+    while((capthatest=="Enter the characters you see") or (capthatest=="There was a problem") or (capthatest=="Password assistance") and (i<16)):
+        capthatest = driver.find_element_by_xpath("//h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
         if capthatest == "Enter the characters you see":
             captha()  
         elif capthatest == "There was a problem":
