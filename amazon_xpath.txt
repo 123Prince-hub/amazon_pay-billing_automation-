@@ -7,27 +7,33 @@ pass = Lav%210811
 
 **************** after login ******************
 
-1. Amazon Pay = //a[contains(text(),"Amazon Pay")]
+1. Amazon Pay = //a[text()='Amazon Pay']
 
 *************** 2nd Page ******************
 
-2. Electercity = //span[contains(text(),"Electricity")] 
+2. Electercity = //span[text()='Electricity'] 
 
 *************** 3rd Page ******************
 
-3. Select state = //span[contains(text(),"Select State")]
+3. Select state = //span[text()='Select State']
 
-4. state = //a[contains(text(),"Rajasthan")]
+4. state = //a[text()='Rajasthan'] 
 
-5. Select board = //span[contains(text(),"Select Electricity Board to proceed")]
+5. Select board = //span[text()='Select Electricity Board to proceed']
 
-6. state = //a[contains(text(),"Jaipur Vidyut Vitran Nigam (JVVNL)")]
+6. state = //a[text()='Jaipur Vidyut Vitran Nigam (JVVNL)']
 
-7. K Number input = //label[contains(text(), "K Number")]//following::input
+7. K Number input = //input[@placeholder='Please enter your K Number']
 
-8. submit button = //span[contains(text(), "Fetch Bill")]
+8. submit button = //span[text()='Fetch Bill'] 
 
 9. continue bill = //span[contains(text(), "Continue to Pay")]
+
+#############################
+
+email after five bill payment = //span[text()='Please pay with Amazon Pay UPI  to complete this transaction. Amazon Pay UPI is the only mode of 
+				payment supported after your first 5 bill payments in a month on this category.'] 
+#############################
 
 *************** 4th Page ******************
 
