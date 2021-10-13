@@ -7,11 +7,11 @@ pass = Lav%210811
 
 **************** after login ******************
 
-1. Amazon Pay = //a[text()='Amazon Pay']
+1. Amazon Pay = driver.find_element_by_xpath('//a[text()="Amazon Pay"]').click()
 
 *************** 2nd Page ******************
 
-2. Electercity = //span[text()='Electricity'] 
+2. Electercity = driver.find_element_by_xpath('//span[text()="Electricity"]').click() 
 
 *************** 3rd Page ******************
 
@@ -29,18 +29,27 @@ pass = Lav%210811
 
 9. continue bill = //span[contains(text(), "Continue to Pay")]
 
+
 #############################
 
 email after five bill payment = //span[text()='Please pay with Amazon Pay UPI  to complete this transaction. Amazon Pay UPI is the only mode of 
 				payment supported after your first 5 bill payments in a month on this category.'] 
+
+Note:- change continoue button type = document.querySelector("#paymentBtnId-announce").setAttribute("type", "submit"); (for bypassing single id)
+
+
 #############################
 
 *************** 4th Page ******************
 
-10. paybill = //span[contains(text(), "Place Order and Pay")]
+10. paybill = //span[text()='Place Order and Pay']
 
 last url = https://www.amazon.in/gp/buy/thankyou/handlers/display.html?purchaseId=404-0053738-9249956&ref_=chk_typ_browserRefresh&isRefresh=1
 
 BBPS Reference Number: = //*[contains(text(), "BBPS Reference Number")]
 Operator Reference Number = //*[contains(text(), "Operator Reference Number")]
+
+
+
+
 
