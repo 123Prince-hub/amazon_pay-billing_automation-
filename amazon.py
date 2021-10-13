@@ -11,10 +11,11 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.implicitly_wait(60)
 
 num = 2
+
 for row in rows:
     col = ws.range("H"+str(num)).value
     if (col != "Success"):
-   
+      
         def login():
             email = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::input").send_keys(row[0])
             button = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::span").click()
@@ -44,6 +45,7 @@ for row in rows:
             capthatest = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')] | //h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
             while((capthatest=="Enter the characters you see") or (capthatest=="Email or mobile phone number") or (capthatest=="There was a problem") or (capthatest=="Password assistance") and (i<16)):
                 capthatest = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')] |//h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
+
                 if capthatest == "Enter the characters you see":
                     captha()  
                 elif capthatest == "There was a problem":
@@ -67,9 +69,8 @@ for row in rows:
         board = driver.find_element_by_xpath('//a[text()="Jaipur Vidyut Vitran Nigam (JVVNL)"]').click()
 
         k_number = driver.find_element_by_xpath('//input[@placeholder="Please enter your K Number"]').send_keys(row[4])
-
         fetch_bill = driver.find_element_by_xpath('//span[text()="Fetch Bill"]').click()
-
+        sleep(5)
         bypass_id = driver.execute_script('document.querySelector("#paymentBtnId-announce").setAttribute("type", "submit")')
         continue_pay = driver.find_element_by_xpath('//span[contains(text(), "Continue to Pay")]').click()
 
@@ -83,13 +84,7 @@ for row in rows:
     
         sleep(120)
         BBPS_Reference_Number = driver.find_element_by_xpath('//*[contains(text(), "BBPS Reference Number")]').text
-        print(BBPS_Reference_Number)
-        ws.range("G2").value = BBPS_Reference_Number
-        ws.range("H2").value = "Success"
+        ws.range("G"+str(num)).value = BBPS_Reference_Number
+        ws.range("H"+str(num)).value = "Success"
     
     num += 1
-
-    
-
-
-
