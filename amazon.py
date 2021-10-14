@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 ws = xw.Book(r'details.xlsx').sheets("data")
 rows = ws.range("A2").expand().options(numbers=int).value
 driver = webdriver.Chrome(ChromeDriverManager().install()) 
-driver.implicitly_wait(80)
+driver.implicitly_wait(60)
 
 num = 2
 
@@ -80,19 +80,36 @@ for row in rows:
             except:
                 pass
             
+            print(driver.current_url, "1111111111")
             button = driver.find_element_by_xpath('//span[text()="Place Order and Pay"]')
             driver.execute_script("arguments[0].click();", button)
+            print(driver.current_url, "222222222")
         
             sleep(60)
-            status = driver.find_element_by_xpath('//h4[text()="Your bill payment is successful"]').text
-            BBPS_Reference_Number = driver.find_element_by_xpath('//*[contains(text(), "BBPS Reference Number")]').text
+            print(driver.current_url, "333333")
+            print(driver.current_url, "44444")
+            try:
+                status = driver.find_element_by_xpath('//h4[text()="Your bill payment is successful"]').text
+                print("nooooooooo")
+            except:
+                print("yessss")
+
+            try:
+                BBPS_Reference_Number = driver.find_element_by_xpath('//*[contains(text(), "BBPS Reference Number")]').text
+                print("yes")
+            except:
+                print("no")
+
+            print(driver.current_url, "55555")
             print("hello world")
-            print(state)
-            print(BBPS_Reference_Number)
+            # print(status)
+            # print(BBPS_Reference_Number)
             if "successful" in status:
+                print(driver.current_url, "66666666")
                 ws.range("G"+str(num)).value = BBPS_Reference_Number
                 ws.range("H"+str(num)).value = "Success"
             else:
+                print(driver.current_url, "777777")
                 ws.range("G"+str(num)).value = "NA"
                 ws.range("H"+str(num)).value = "Pending"
         
