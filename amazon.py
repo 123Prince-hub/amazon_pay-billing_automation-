@@ -13,7 +13,6 @@ ws = xw.Book(r'details.xlsx').sheets("data")
 rows = ws.range("A2").expand().options(numbers=int).value
 driver = webdriver.Chrome(ChromeDriverManager().install()) 
 driver.maximize_window()
-# driver.implicitly_wait(10)
 
 # =====================================  function for login  ===================================
 def login():   
@@ -35,6 +34,8 @@ def captha():
     driver.find_element_by_xpath('//label[contains(text(),"Type characters")]//following::input').send_keys(a.lstrip())
     sleep(1)
     driver.find_element_by_id('signInSubmit').click()
+    sleep(1)
+    password.clear()
 
 
 # ====================================  function for password error  ===================================
@@ -45,7 +46,7 @@ def passError():
 
 # ====================================  function for email error  ======================================
 def emailError():  
-    button = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::span").send_keys(row[0])
+    Email = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::span").send_keys(row[0])
 
 
 # ======================  function for all login, password error capthca, email error  =============================
@@ -53,9 +54,9 @@ def authentication():
     try:
         sleep(1)
         i = 0
-        capthatest = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')] | //h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
+        capthatest = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')] | //h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')] | //*[@id='authportal-main-section']/div[2]/div/div/div/h1").text
         while((capthatest=="Enter the characters you see") or (capthatest=="Email or mobile phone number") or (capthatest=="There was a problem") or (capthatest=="Password assistance") and (i<16)):
-            capthatest = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')] |//h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')]").text
+            capthatest = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')] |//h4[contains(text(),'Enter the characters you see')] | //h4[contains(text(),'There was a problem')] | //h1[contains(text(),'Password assistance')] | //*[@id='authportal-main-section']/div[2]/div/div/div/h1").text
 
             if capthatest == "Enter the characters you see":
                 captha()  
@@ -65,20 +66,22 @@ def authentication():
                 emailError()
             elif capthatest == "Email or mobile phone number":
                 login()
+            elif capthatest == "Sign-In":
+                passError()
             else:
                 pass
             i+=1
             sleep(1)
     except:
-        pass
+        del capthatest
 
 
 # ==========================================  function for otp sending  ======================================
 def otp():   
     try:
-        send_otp = driver.find_element_by_xpath('').click()
-        sleep(10)
-        ok_button = driver.find_element_by_xpath('').click()
+        send_otp = driver.find_element_by_xpath('//*[@id="continue"]').click()
+        sleep(30)
+        ok_button = driver.find_element_by_xpath('//*[@id="cvf-submit-otp-button"]/span/input').click()
     except:
         pass
 
@@ -96,7 +99,7 @@ def popups():
 num = 2
 for row in rows:
     col = ws.range("I"+str(num)).value
-    if (col != "Success"):
+    if (col == "Fail") or (col==None):
         try:
             driver.get ("https://www.amazon.in/hfc/bill/electricity?ref_=apay_deskhome_Electricity")
 
@@ -135,14 +138,11 @@ for row in rows:
             
             button = driver.find_element_by_xpath('//span[text()="Place Order and Pay"]')
             driver.execute_script("arguments[0].click();", button)
+            sleep(10)
+            otp()
             
-            
-            sleep(30)
+            sleep(40)
             try:
-                # success = driver.find_element_by_xpath('//*[@id="deep-dtyp-success-alert"]/div/h4')
-                # pending = driver.find_element_by_xpath('//*[@id="deep-dtyp-pending-widget"]/div/div/h4')
-                # fail = driver.find_element_by_xpath('//*[@id="deep-dtyp-failed-widget"]/div/div/h4')
-
                 success = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//*[@id="deep-dtyp-success-alert"]/div/h4'))
                 )
