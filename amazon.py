@@ -13,9 +13,9 @@ ws = xw.Book(r'details.xlsx').sheets("data")
 rows = ws.range("A2").expand().options(numbers=int).value
 driver = webdriver.Chrome(ChromeDriverManager().install()) 
 driver.maximize_window()
-driver.implicitly_wait(10)
+# driver.implicitly_wait(10)
 
-# -------------------------------  function for login  -----------------------------------
+# =====================================  function for login  ===================================
 def login():   
     email = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::input").send_keys(row[0])
     button = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::span").click()
@@ -23,7 +23,7 @@ def login():
     signin = driver.find_element_by_xpath("//label[contains(text(),'Password')]//following::span").click()
 
 
-# -------------------------------  function for captcha read  -----------------------------------
+# =========================================  function for captcha read  ==========================================
 def captha(): 
     password = driver.find_element_by_xpath("//label[contains(text(),'Password')]//following::input").send_keys(row[1])
     capta= driver.find_element_by_id('auth-captcha-image').screenshot('captcha.png')
@@ -37,18 +37,18 @@ def captha():
     driver.find_element_by_id('signInSubmit').click()
 
 
-# -------------------------------  function for password error  -----------------------------------
+# ====================================  function for password error  ===================================
 def passError(): 
     password = driver.find_element_by_xpath("//label[contains(text(),'Password')]//following::input").send_keys(row[1])
     signin = driver.find_element_by_xpath("//label[contains(text(),'Password')]//following::span").click()
 
 
-# -------------------------------   function for email error  -----------------------------------
+# ====================================  function for email error  ======================================
 def emailError():  
     button = driver.find_element_by_xpath("//label[contains(text(),'Email or mobile phone number')]//following::span").send_keys(row[0])
 
 
-# ----------------------  function for all login, password error capthca, email error  ---------------------------
+# ======================  function for all login, password error capthca, email error  =============================
 def authentication(): 
     try:
         sleep(1)
@@ -73,7 +73,7 @@ def authentication():
         pass
 
 
-# -------------------------------   function for otp sending  -----------------------------------
+# ==========================================  function for otp sending  ======================================
 def otp():   
     try:
         send_otp = driver.find_element_by_xpath('').click()
@@ -82,7 +82,8 @@ def otp():
     except:
         pass
 
-# -------------------------------  function for dissmiss all popups  -----------------------------------
+
+# ===================================  function for dissmiss all popups  ================================
 def popups():  
     try:
         pass
@@ -90,7 +91,7 @@ def popups():
         pass
 
 
-# -------------------------------  start automation from here  -----------------------------------
+# =====================================  start automation from here  ====================================
 
 num = 2
 for row in rows:
@@ -103,19 +104,19 @@ for row in rows:
             state = driver.find_element_by_xpath('//a[text()="Rajasthan"]').click()
 
             board = row[3]
-            board_dropdown = WebDriverWait(driver, 20).until(
+            board_dropdown = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//span[text()="Select Electricity Board to proceed"]'))
             )
             board_dropdown.click()
             driver.find_element_by_link_text(board).click()
 
-            k_number = WebDriverWait(driver, 20).until(
+            k_number = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//label[contains(text(), "K Number")]//following::input'))
             )
             k_number.send_keys(row[4])
             fetch_bill = driver.find_element_by_xpath('//span[text()="Fetch Bill"]').click()
             
-            element = WebDriverWait(driver, 20).until(
+            element = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//span[contains(text(),"Continue to Pay")]'))
             )
             
@@ -125,12 +126,12 @@ for row in rows:
             ws.range("G"+str(num)).value = res_amount
 
             bypass_id = driver.execute_script('document.querySelector("#paymentBtnId-announce").setAttribute("type", "submit")')
-            element = WebDriverWait(driver, 20).until(
+            element = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//span[contains(text(), "Continue to Pay")]'))
             )
             element.click()
 
-            authentication() # ----------------------login & captcha function calling
+            authentication() # =========================== login & captcha function calling ============================
             
             button = driver.find_element_by_xpath('//span[text()="Place Order and Pay"]')
             driver.execute_script("arguments[0].click();", button)
@@ -138,15 +139,32 @@ for row in rows:
             
             sleep(30)
             try:
-                success = driver.find_element_by_xpath('//*[@id="deep-dtyp-success-alert"]/div/h4')
-                pending = driver.find_element_by_xpath('//*[@id="deep-dtyp-pending-widget"]/div/div/h4')
-                fail = driver.find_element_by_xpath('//*[@id="deep-dtyp-failed-widget"]/div/div/h4')
+                # success = driver.find_element_by_xpath('//*[@id="deep-dtyp-success-alert"]/div/h4')
+                # pending = driver.find_element_by_xpath('//*[@id="deep-dtyp-pending-widget"]/div/div/h4')
+                # fail = driver.find_element_by_xpath('//*[@id="deep-dtyp-failed-widget"]/div/div/h4')
+
+                success = WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="deep-dtyp-success-alert"]/div/h4'))
+                )
+
+                pending = WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="deep-dtyp-pending-widget"]/div/div/h4'))
+                )
+
+                fail = WebDriverWait(driver, 30).until(
+                EC.presence_of_element_located((By.XPATH, '//*[@id="deep-dtyp-failed-widget"]/div/div/h4'))
+                )
+
                 if success.is_displayed():
                     status = success.text
+
                 elif pending.is_displayed():
                     status = pending.text
-                else:
+
+                elif fail.is_displayed():
                     status = fail.text
+                else:
+                    pass
             except:
                 pass
 
